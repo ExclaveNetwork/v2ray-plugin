@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	gonet "net"
 	"os"
 	"os/signal"
 	"os/user"
@@ -406,4 +407,9 @@ func main() {
 		signal.Notify(osSignals, os.Interrupt, os.Kill, syscall.SIGTERM)
 		<-osSignals
 	}
+}
+
+// Workaround https://github.com/v2fly/v2ray-core/blob/63f97f5a5616bf008033225461fce5686a157da6/transport/internet/system_dns_android.go#L35-L37
+func init() {
+	gonet.DefaultResolver = &gonet.Resolver{}
 }
